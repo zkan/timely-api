@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/codeforpublic/morchana-static-qr-code-api/internal/middleware"
+	"github.com/zkan/timely-api/internal/middleware"
 	"github.com/gorilla/mux"
 	"github.com/spf13/viper"
 )

@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	viper.SetDefault("port", "1323")
+	viper.SetDefault("port", "8000")
 	viper.SetDefault("cors.allow_origin", "*")
 	viper.SetDefault("db.conn.string", "host=localhost user=postgres password=mysecretpassword dbname=postgres sslmode=disable")
 }

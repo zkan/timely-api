@@ -4,9 +4,11 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"encoding/json"
+	"github.com/gorilla/mux"
 )
 
 type Task struct {
@@ -87,5 +89,20 @@ func HandleRequest(db *sql.DB) http.HandlerFunc {
 			w.Header().Set("Content-Type", "application/json")
 			w.Write(js)
 		}
+	}
+}
+
+func Delete(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		id, err := strconv.ParseInt(vars["id"], 10, 64)
+		if err == nil {
+			log.Print(err)
+		}
+
+		stmt := `DELETE FROM tasks WHERE id = $1`
+		db.Exec(stmt, id)
+
+		json.NewEncoder(w).Encode(http.StatusOK)
 	}
 }

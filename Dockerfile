@@ -2,7 +2,7 @@ FROM golang:1.14-alpine as builder
 
 RUN apk update && apk add tzdata curl git \
     && cp /usr/share/zoneinfo/Asia/Bangkok /etc/localtime \
-    && echo "Asia/Bangkok" >  /etc/timezone \
+    && echo "Asia/Bangkok" > /etc/timezone \
     && apk del tzdata
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.9.1/migrate.linux-amd64.tar.gz | tar xvz
 
@@ -23,7 +23,7 @@ FROM alpine:latest
 
 RUN apk update && apk add tzdata \
     && cp /usr/share/zoneinfo/Asia/Bangkok /etc/localtime \
-    && echo "Asia/Bangkok" >  /etc/timezone \
+    && echo "Asia/Bangkok" > /etc/timezone \
     && apk del tzdata
 
 WORKDIR /app

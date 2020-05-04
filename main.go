@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -15,9 +16,12 @@ import (
 )
 
 func init() {
-	viper.SetDefault("port", "8000")
-	viper.SetDefault("cors.allow_origin", "*")
+	viper.SetDefault("port", "1323")
+	viper.SetDefault("cors.allow.origin", "*")
 	viper.SetDefault("db.conn.string", "host=localhost user=postgres password=mysecretpassword dbname=postgres sslmode=disable")
+
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 }
 
 func newDBClient(connStr string) (*sql.DB, error) {
@@ -27,7 +31,7 @@ func newDBClient(connStr string) (*sql.DB, error) {
 func main() {
 	r := mux.NewRouter()
 	r.Use(mux.CORSMethodMiddleware(r))
-	r.Use(middleware.Headers(viper.GetString("cors.allow_origin")))
+	r.Use(middleware.Headers(viper.GetString("cors.allow.origin")))
 
 	r.HandleFunc("/healths", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "ok")

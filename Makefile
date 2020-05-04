@@ -1,5 +1,3 @@
-PORT="1323"
-CORS_ALLOW_ORIGIN="*"
 POSTGRESQL_URL=postgres://postgres:mysecretpassword@localhost:5432/postgres?sslmode=disable
 
 run:

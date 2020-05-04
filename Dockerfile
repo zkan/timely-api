@@ -28,7 +28,6 @@ RUN apk update && apk add tzdata \
 
 WORKDIR /app
 
-COPY ./configs ./configs
 COPY --from=builder /app/db/migrations/ /app/migrations/
 COPY --from=builder /go/migrate.linux-amd64 /app/migrate
 COPY --from=builder /app/goapp /app/

@@ -16,3 +16,6 @@
 
 # Vim
 *.swp
+
+# Env
+.env

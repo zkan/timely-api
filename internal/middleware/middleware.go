@@ -15,7 +15,6 @@ func Headers(allowOrigin string) mux.MiddlewareFunc {
 			w.Header().Set("X-Frame-Options", "DENY")
 			w.Header().Set("Strict-Transport-Security", "max-age=604800; includeSubDomains; preload")
 			w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, HEAD, GET, POST, PUT, PATCH, DELETE")
-			w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 			handler.ServeHTTP(w, r)
 		})
 	}

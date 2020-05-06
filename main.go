@@ -43,8 +43,13 @@ func main() {
 	}
 	defer db.Close()
 
-	r.HandleFunc("/tasks", task.HandleRequest(db)).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
-	r.HandleFunc("/tasks/{id}", task.Delete(db)).Methods(http.MethodDelete, http.MethodOptions)
+	// Additional headers for preflight request
+	r.PathPrefix("/").Methods(http.MethodOptions).HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Headers", r.Header.Get("Access-Control-Request-Headers"))
+	})
+
+	r.HandleFunc("/tasks", task.HandleRequest(db)).Methods(http.MethodGet, http.MethodPost)
+	r.HandleFunc("/tasks/{id}", task.Delete(db)).Methods(http.MethodDelete)
 
 	srv := &http.Server{
 		Handler:      r,

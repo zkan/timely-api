@@ -43,8 +43,8 @@ func main() {
 	}
 	defer db.Close()
 
-	r.HandleFunc("/tasks", task.HandleRequest(db)).Methods(http.MethodGet, http.MethodPost)
-	r.HandleFunc("/tasks/{id}", task.Delete(db)).Methods(http.MethodDelete)
+	r.HandleFunc("/tasks", task.HandleRequest(db)).Methods(http.MethodGet, http.MethodPost, http.MethodOptions)
+	r.HandleFunc("/tasks/{id}", task.Delete(db)).Methods(http.MethodDelete, http.MethodOptions)
 
 	srv := &http.Server{
 		Handler:      r,

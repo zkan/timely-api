@@ -6,6 +6,8 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - postgres-data
     ports:
     - 5432:5432
 
@@ -21,6 +23,8 @@ services:
     expose:
       - "8000"
     ports:
-    - 8000:8000
+      - 8000:8000
     command: sh -c './migrate -path migrations -database "postgres://postgres:mysecretpassword@postgres:5432/postgres?sslmode=disable" up && ./goapp'
 
+volumes:
+  postgres-data:

@@ -15,7 +15,7 @@ type Task struct {
 	ID        int64     `json:"id"`
 	Name      string    `json:"name"`
 	Category  string    `json:"category"`
-	Author    string    `json:"author"`
+	Username  string    `json:"username"`
 	StartedAt time.Time `json:"started_at"`
 	EndedAt   time.Time `json:"ended_at"`
 }
@@ -23,7 +23,7 @@ type Task struct {
 type TaskCreationRequest struct {
 	Name      string    `json:"name"`
 	Category  string    `json:"category"`
-	Author    string    `json:"author"`
+	Username  string    `json:"username"`
 	StartedAt time.Time `json:"started_at"`
 	EndedAt   time.Time `json:"ended_at"`
 }
@@ -34,7 +34,7 @@ func HandleRequest(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "GET":
-			stmt := "SELECT id, name, category, author, started_at, ended_at FROM tasks"
+			stmt := "SELECT id, name, category, username, started_at, ended_at FROM tasks"
 			rows, err := db.Query(stmt)
 			if err != nil {
 				log.Print(err)
@@ -44,7 +44,7 @@ func HandleRequest(db *sql.DB) http.HandlerFunc {
 
 			for rows.Next() {
 				var task Task
-				if err := rows.Scan(&task.ID, &task.Name, &task.Category, &task.Author, &task.StartedAt, &task.EndedAt); err != nil {
+				if err := rows.Scan(&task.ID, &task.Name, &task.Category, &task.Username, &task.StartedAt, &task.EndedAt); err != nil {
 					log.Fatal(err)
 				}
 				tasks = append(tasks, task)
@@ -66,10 +66,10 @@ func HandleRequest(db *sql.DB) http.HandlerFunc {
 				return
 			}
 
-			stmt := `INSERT into tasks (name, category, author, started_at, ended_at) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+			stmt := `INSERT into tasks (name, category, username, started_at, ended_at) VALUES ($1, $2, $3, $4, $5) RETURNING id`
 
 			var lastInsertId int64
-			err := db.QueryRow(stmt, t.Name, t.Category, t.Author, t.StartedAt, t.EndedAt).Scan(&lastInsertId)
+			err := db.QueryRow(stmt, t.Name, t.Category, t.Username, t.StartedAt, t.EndedAt).Scan(&lastInsertId)
 			if err != nil {
 				panic(err)
 			}
@@ -78,7 +78,7 @@ func HandleRequest(db *sql.DB) http.HandlerFunc {
 				ID:        lastInsertId,
 				Name:      t.Name,
 				Category:  t.Category,
-				Author:    t.Author,
+				Username:  t.Username,
 				StartedAt: t.StartedAt,
 				EndedAt:   t.EndedAt,
 			}
